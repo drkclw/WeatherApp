@@ -1,0 +1,58 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="WeatherApp.Pages.ContactListPage"
+             BackgroundColor="#533F95"   
+             xmlns:ctrls="clr-namespace:WeatherApp.CustomControls"   
+             Title="Contacts">
+    <!--<ContentPage.ToolbarItems>
+        <ToolbarItem   
+            Text ="Select"   
+            Priority="0"   
+            Order="Primary"   
+            Command="{Binding SelectContactCommand}"/>
+    </ContentPage.ToolbarItems>-->
+    <ContentPage.Content>
+        <StackLayout x:Name="stackPanel"   
+        VerticalOptions="FillAndExpand"   
+        Spacing="0">
+            <SearchBar   
+            TextColor="#533F95"   
+            Text="{Binding SearchString}"   
+            CancelButtonColor="#533F95"   
+            Placeholder="Search"   
+            PlaceholderColor="#533F95"   
+            BackgroundColor="White"/>
+            <ListView x:Name="listView"   
+            BackgroundColor="#533F95"   
+            SeparatorColor="Silver" HasUnevenRows="true"   
+            SelectedItem="{Binding SelectedContact, Mode=TwoWay}"   
+            ItemsSource="{Binding SearchContactList}">
+                <ListView.ItemTemplate>
+                    <DataTemplate>
+                        <ViewCell>
+                            <StackLayout Padding="20"   
+                            Orientation="Horizontal">
+                                <Label Text="{Binding LocalName}"   
+                                VerticalTextAlignment="Center"   
+                                TextColor="White" FontSize="20"/>
+                                <ctrls:Checkbox x:Name="cbUS"                                   
+                                    IsVisible="True"   
+                                IsChecked="{Binding IsSelected}"   
+                                BorderImageSource="check_box_border.png"   
+                                CheckedBackgroundImageSource="checked_bg.png"   
+                                CheckmarkImageSource="check_mark.png" HorizontalOptions="EndAndExpand"/>
+                            </StackLayout>
+                        </ViewCell>
+                    </DataTemplate>
+                </ListView.ItemTemplate>
+            </ListView>
+            <StackLayout Padding="20">
+                <Button Text="Share" HorizontalOptions="FillAndExpand"   
+                Command="{Binding ShareCommand}"   
+                BackgroundColor="White"   
+                TextColor="#533F95"/>
+            </StackLayout>
+        </StackLayout>
+    </ContentPage.Content>
+</ContentPage>

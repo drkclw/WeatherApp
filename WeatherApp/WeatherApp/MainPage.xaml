@@ -1,0 +1,29 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="WeatherApp.MainPage">
+    <ContentPage.Content>
+        <StackLayout>
+            <Picker Title="Search weather:" x:Name="searchType" SelectedIndexChanged="SearchType_SelectedIndexChanged"/>
+
+            <StackLayout IsVisible="False" x:Name="zipcodeSearch">
+                <Entry Placeholder="" x:Name="zipCode" TextColor="Black" WidthRequest="100"/>
+            </StackLayout>
+
+            <Button Text="Get Weather" HorizontalOptions="FillAndExpand" Clicked="GetWeather_Clicked"/>
+
+            <Label Text="" x:Name="cityText" HorizontalOptions="CenterAndExpand"/>
+
+            <StackLayout Orientation="Horizontal">
+                <Label Text="" x:Name="temperatureText"/>
+                <Image x:Name="weatherIcon" Aspect="AspectFill"></Image>
+            </StackLayout>
+
+            <Label Text="" x:Name="weatherDescriptionText"/>
+
+            <Button Text="Share weather" HorizontalOptions="FillAndExpand" Clicked="ShareWeather_Clicked" />
+        </StackLayout>
+
+
+    </ContentPage.Content>
+</ContentPage>
