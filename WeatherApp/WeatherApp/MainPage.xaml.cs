@@ -1,4 +1,5 @@
-﻿using Microsoft.AppCenter.Crashes;
+﻿using Microsoft.AppCenter.Analytics;
+using Microsoft.AppCenter.Crashes;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -20,9 +21,11 @@ namespace WeatherApp
 		{
 			InitializeComponent ();
 
-            var searchTypeList = new List<string>();
-            searchTypeList.Add("Current location.");
-            searchTypeList.Add("Search by zip code.");
+            var searchTypeList = new List<string>
+            {
+                "Current location.",
+                "Search by zip code."
+            };
             searchType.ItemsSource = searchTypeList;
         }
 
@@ -61,6 +64,12 @@ namespace WeatherApp
                         cityText.Text = _weather.CityName;
                         weatherIcon.Source = _weather.IconUrl;
                         weatherDescriptionText.Text = _weather.WeatherDescription;
+
+                        Analytics.TrackEvent("Weather search", new Dictionary<string, string> {
+                            { "Category", "By current location" },
+                            { "Latitude",  location.Latitude.ToString()},
+                            { "Longitude",  location.Longitude.ToString()}
+                        });
                     }
                     catch (FeatureNotSupportedException fnsEx)
                     {
@@ -99,7 +108,7 @@ namespace WeatherApp
                         // Unable to get location
                         await App.Current.MainPage.DisplayAlert("Info", "Unable to get current location.", "OK");
                         Crashes.TrackError(ex, properties);
-                    }
+                    }                    
                 }
                 else
                 {
@@ -110,6 +119,10 @@ namespace WeatherApp
                         cityText.Text = _weather.CityName;
                         weatherIcon.Source = _weather.IconUrl;
                         weatherDescriptionText.Text = _weather.WeatherDescription;
+                        Analytics.TrackEvent("Weather search", new Dictionary<string, string> {
+                        { "Category", "By zip code" },
+                        { "Zipcode",  zipCode.Text}
+                        });
                     }
                 }
             }
@@ -118,7 +131,7 @@ namespace WeatherApp
                 var properties = new Dictionary<string, string> {
                             { "Where", "Get weather by zipcode." }
                 };
-                Crashes.TrackError(ex);
+                Crashes.TrackError(ex, properties);
             }            
         }
 
@@ -133,7 +146,7 @@ namespace WeatherApp
                 var properties = new Dictionary<string, string> {
                             { "Where", "Share weather button." }
                 };
-                Crashes.TrackError(ex);
+                Crashes.TrackError(ex, properties);
             }
         }
     }

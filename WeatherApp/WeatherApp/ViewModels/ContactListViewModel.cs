@@ -1,4 +1,5 @@
-﻿using Microsoft.AppCenter.Crashes;
+﻿using Microsoft.AppCenter.Analytics;
+using Microsoft.AppCenter.Crashes;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
@@ -90,18 +91,31 @@ namespace WeatherApp.ViewModels
 
         async Task ShareWeather()
         {
-            var selectedContactsList = ContactList.Where(x => x.IsSelected == true).ToList();
-            if (selectedContactsList.Count > 0)
+            //Crashes.GenerateTestCrash();
+            try
             {
-                await SendSms(
-                    string.Format("Current weather in {0} is: {1}, current temperature is: {2}",
-                    _weather.CityName, 
-                    _weather.WeatherDescription, _weather.Temperature), 
-                    selectedContactsList.Select(c => c.PhoneNumbers.ElementAt(0).Digits).ToArray());                
+                var selectedContactsList = ContactList.Where(x => x.IsSelected == true).ToList();
+                if (selectedContactsList.Count > 0)
+                {
+                    await SendSms(
+                        string.Format("Current weather in {0} is: {1}, current temperature is: {2}",
+                        _weather.CityName,
+                        _weather.WeatherDescription, _weather.Temperature),
+                        selectedContactsList.Select(c => c.PhoneNumbers.ElementAt(0).Digits).ToArray());
+                }
+                else
+                {
+                    await App.Current.MainPage.DisplayAlert("Info", "Please select at least one contact.", "Ok");
+                }
             }
-            else
+            catch (Exception ex)
             {
-                await App.Current.MainPage.DisplayAlert("Info", "Please select at least one contact.", "Ok");
+                // Other error has occurred.
+                var properties = new Dictionary<string, string> {
+                            { "Where", "Share weather command." },
+                            { "Issue", "Unknown error occurred." }
+                        };
+                Crashes.TrackError(ex, properties);
             }
         }
 
@@ -111,12 +125,16 @@ namespace WeatherApp.ViewModels
             {
                 var message = new SmsMessage(messageText, recipients);
                 await Sms.ComposeAsync(message);
+
+                Analytics.TrackEvent("Send to SMS", new Dictionary<string, string> {
+                            { "Message", messageText }
+                        });
             }
             catch (FeatureNotSupportedException ex)
             {
                 // Sms is not supported on this device.
                 var properties = new Dictionary<string, string> {
-                            { "Where", "Share weather command." },
+                            { "Where", "SendSMS method." },
                             { "Issue", "SMS not supported in device." }
                         };
                 Crashes.TrackError(ex, properties);
@@ -125,7 +143,7 @@ namespace WeatherApp.ViewModels
             {
                 // Other error has occurred.
                 var properties = new Dictionary<string, string> {
-                            { "Where", "Share weather command." },
+                            { "Where", "SendSMS method." },
                             { "Issue", "Unknown error occurred." }
                         };
                 Crashes.TrackError(ex, properties);
