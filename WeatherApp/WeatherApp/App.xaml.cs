@@ -18,7 +18,7 @@ namespace WeatherApp
 
         protected override void OnStart()
         {
-            AppCenter.Start("ios=[YOUR APP CENTER KEY];android=[YOUR APP CENTER KEY];", typeof(Analytics), typeof(Crashes));
+            AppCenter.Start("ios=3e28c632-5c1f-4b8e-a5d3-117c4e044aa2;android=b7f03248-c863-40fa-94d6-21e4f531ad37;", typeof(Analytics), typeof(Crashes));
         }
 
         protected override void OnSleep()
