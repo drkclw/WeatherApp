@@ -45,8 +45,8 @@ namespace WeatherApp
 
         private async void GetWeather_Clicked(object sender, EventArgs e)
         {
-            try
-            {
+            //try
+            //{
                 if (searchType.SelectedIndex == 0)
                 {
                     try
@@ -112,6 +112,8 @@ namespace WeatherApp
                 }
                 else
                 {
+                var test = 0;
+                var crash = 1 / test;
                     if (!string.IsNullOrEmpty(zipCode.Text))
                     {
                         _weather = await Core.GetWeatherByZipcode(zipCode.Text);
@@ -125,14 +127,14 @@ namespace WeatherApp
                         });
                     }
                 }
-            }
-            catch (Exception ex)
-            {
-                var properties = new Dictionary<string, string> {
-                            { "Where", "Get weather by zipcode." }
-                };
-                Crashes.TrackError(ex, properties);
-            }            
+            //}
+            //catch (Exception ex)
+            //{
+            //    var properties = new Dictionary<string, string> {
+            //                { "Where", "Get weather by zipcode." }
+            //    };
+            //    Crashes.TrackError(ex, properties);
+            //}            
         }
 
         private async void ShareWeather_Clicked(object sender, EventArgs e)
