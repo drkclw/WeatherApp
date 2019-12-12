@@ -111,9 +111,7 @@ namespace WeatherApp
                     }                    
                 }
                 else
-                {
-                var test = 0;
-                var crash = 1 / test;
+                {                
                     if (!string.IsNullOrEmpty(zipCode.Text))
                     {
                         _weather = await Core.GetWeatherByZipcode(zipCode.Text);
